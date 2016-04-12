@@ -1,0 +1,34 @@
+#!/bin/bash
+# 用普通用户权限运行，则安装字体至 ~/.fonts/wps-office
+# 用 root 权限运行，则安装字体至 /usr/share/fonts/wps-office
+
+if [ $EUID -eq 0 ]; then
+    echo "Running under Root"
+    targetDir=/usr/share/fonts/wps-office
+else
+    echo "Running with uid $EUID"
+    targetDir=~/.fonts/wps-office
+fi
+
+fontconfigDir=`dirname $0`/fontconfig
+mkdir -p ~/.config/fontconfig/conf.d
+cp "$fontconfigDir"/*.conf ~/.config/fontconfig/conf.d
+
+fontsDir=`dirname $0`/fonts/
+
+if [ -d $fontsDir ]; then
+    mkdir -p $targetDir
+    cp -p $fontsDir/* $targetDir
+    fc-cache $targetDir
+    rv=$?
+    if [ $rv -eq 0 ]; then
+        echo "Installed fonts to $targetDir !"
+        exit 0
+    else
+        echo "fc-cache failed with return status: $rv"
+        exit 1
+    fi
+else
+    echo "Can't find the directory containing WPS fonts"
+    exit 1
+fi
