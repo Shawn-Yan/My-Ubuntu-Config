@@ -138,8 +138,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_b), sendMessage ToggleStruts)
 
     -- Take screen shot
-    , ((0, xK_Print), spawn "deepin-scrot")
-    
+    --, ((0, xK_Print), spawn "deepin-scrot")
+   
+    ,( (modm, xK_Print), spawn "sleep 0.2; scrot -s -e \'mv $f ~/Pictures/Screenshots/\'")
+    , ((0, xK_Print), spawn "scrot -e \'mv $f ~/Pictures/Screenshots/\'")
 
     -- Run xmessage with a summary of the default keybindings (useful for beginners)
     -- , ((modMask .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
@@ -270,7 +272,7 @@ myStartupHook = return ()
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main = do
-    xmproc <- spawnPipe "/usr/bin/xmobar"
+    xmproc <- spawnPipe "/usr/bin/xmobar /home/shawn/.xmobarrc"
     xmonad $ defaultConfig {
       -- simple stuff
         terminal           = myTerminal,
