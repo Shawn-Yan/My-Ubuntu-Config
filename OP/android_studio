@@ -1,0 +1,4 @@
+cd /home/shawn/SoftWare/AndroidDT/android-studio/bin
+wmname LG3D
+./studio.sh
+

@@ -1,0 +1,3 @@
+#!/bin/bash
+wmname LG3D
+sh ~/SoftWare/visual_paradigm/Visual_Paradigm_CE_13.0/bin/Visual_Paradigm  

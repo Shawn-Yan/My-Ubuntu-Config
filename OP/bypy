@@ -1,0 +1,2 @@
+#/bin/sh
+python ~/SoftWare/bypy/bypy.py $1

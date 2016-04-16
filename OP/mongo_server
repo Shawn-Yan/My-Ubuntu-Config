@@ -1,0 +1,4 @@
+#!/bin/bash 
+sudo service mongod stop
+mongod --dbpath ~/Database/wifiposDB 
+# mongod --dbpath ~/Database/mongoDB 

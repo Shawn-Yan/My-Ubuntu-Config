@@ -1,0 +1,14 @@
+#!/bin/bash
+# batch  compile cpp or c file
+find -type f \( -iname '*.c' -o -iname '*.cpp' \) -print |
+while read filename
+do
+    case "$filename" in
+    *.c)
+      gcc "$filename" -o "$(dirname "$filename")"/"$(basename "$filename" .c)"
+        ;;
+    *.cpp)
+        g++ "$filename" -o "$(dirname "$filename")"/"$(basename "$filename" .cpp)"
+        ;;
+    esac
+done
