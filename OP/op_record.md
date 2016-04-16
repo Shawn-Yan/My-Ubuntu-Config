@@ -50,7 +50,7 @@ tcpdump  网络监控
 syddig 系统监控
 supervoid :
 supervisord，初始启动Supervisord，启动、管理配置中设置的进程。
-supervisorctl stop programxxx，停止某一个进程(programxxx)，programxxx为[program:chatdemon]里配置的值，这个示例就是chatdemon。
+supervisorctl stop programxxx，停止某一个进程(programxxx)，programxxx为 program:chatdemon 里配置的值，这个示例就是chatdemon。
 supervisorctl start programxxx，启动某个进程
 supervisorctl restart programxxx，重启某个进程
 supervisorctl stop groupworker: ，重启所有属于名为groupworker这个分组的进程(start,restart同理)
@@ -61,5 +61,8 @@ supervisorctl update，根据最新的配置文件，启动新配置或有改动
 #笔记应用
 WizNote
 
+#文件操作
+file size :  du -sh ./*           **
+disk size :  df -hl
 
 
