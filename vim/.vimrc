@@ -48,25 +48,8 @@ set showcmd         " 输入的命令显示出来，看的清楚些
 set scrolloff=3     " 光标移动到buffer的顶部和底部时保持3行距离  
 set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}   "状态行显示的内容  
 set laststatus=2    " 启动显示状态行(1),总是显示状态行(2)  
-
 "set foldenable      " 允许折叠  
-"set foldmethod=manual   " 手动折叠
-"set foldmethod=indent
-"set foldlevel=1
-"set foldclose=all
-set foldmethod=syntax
-set nofoldenable 
-"set foldlevelstart=1
-
-"let javaScript_fold=1         " JavaScript
-"let perl_fold=1               " Perl
-"let php_folding=1             " PHP
-"let r_syntax_folding=1        " R
-"let ruby_fold=1               " Ruby
-"let sh_fold_enabled=1         " sh
-"let vimsyn_folding='af'       " Vim script
-"let xml_syntax_folding=1      " XML
-
+""set foldmethod=manual   " 手动折叠  
 set nocompatible  "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限  
 " 显示中文帮助
 if version >= 603
@@ -81,7 +64,7 @@ set tabstop=4
 " 统一缩进为4
 set softtabstop=4
 set shiftwidth=4
-" 不要用空格代替制表符
+" 使用空格代替制表符
 set expandtab
 " 在行和段开始处使用制表符
 set smarttab
@@ -148,29 +131,35 @@ func SetTitle()
 "    elseif &filetype == 'mkd'
 "        call setline(1,"<head><meta charset=\"UTF-8\"></head>")
 	else 
-		call setline(1, "/*************************************************************************") 
-		call append(line("."), "	> File Name: ".expand("%")) 
-		call append(line(".")+1, "	> Author: Shawn Yan ") 
-		call append(line(".")+2, "	> Mail: yanxjun1990@gmail.com") 
-        call append(line(".")+3, "	> Created Time: ".strftime('%Y-%m-%d %H:%M:%S')) 
-		call append(line(".")+4, " ************************************************************************/") 
-		call append(line(".")+5, "")
+		call setline(1, "/***********************************************************************************") 
+		call append(line("."),   "    file name:    ".expand("%")) 
+        call append(line(".")+1, "    discription:  ") 
+        call append(line(".")+2, "") 
+        call append(line(".")+3, "    version:      1.0") 
+        call append(line(".")+4, "") 
+		call append(line(".")+5, "    author:       Shawn Yan") 
+        call append(line(".")+6, "    email:        yanxiaojun01@baidu.com") 
+        call append(line(".")+7, "    created time: ".strftime("%Y/%m/%d %T")) 
+		call append(line(".")+8, " **********************************************************************************/") 
+		call append(line(".")+9, "")
 	endif
 	if expand("%:e") == 'cpp'
-		call append(line(".")+6, "#include <iostream>")
-		call append(line(".")+7, "using namespace std;")
-		call append(line(".")+8, "")
+		call append(line(".")+10, "#include<iostream>")
+		call append(line(".")+11, "using namespace std;")
+		call append(line(".")+12, "")
 	endif
 	if &filetype == 'c'
-		call append(line(".")+6, "#include<stdio.h>")
-		call append(line(".")+7, "")
+		call append(line(".")+10, "#include<stdio.h>")
+		call append(line(".")+11, "")
 	endif
 	if expand("%:e") == 'h'
-		call append(line(".")+6, "#pragma once")
+		call append(line(".")+10, "#ifndef _".toupper(expand("%:r"))."_H")
+		call append(line(".")+11, "#define _".toupper(expand("%:r"))."_H")
+		call append(line(".")+12, "#endif")
 	endif
 	if &filetype == 'java'
-		call append(line(".")+6,"public class ".expand("%:r"))
-		call append(line(".")+7,"")
+		call append(line(".")+10,"public class ".expand("%:r"))
+		call append(line(".")+11,"")
 	endif
 	"新建文件后，自动定位到文件末尾
 endfunc 
@@ -199,7 +188,7 @@ imap <C-a> <Esc>^
 imap <C-e> <Esc>$
 vmap <C-c> "+y
 set mouse=v
-"set clipboard=unnamed
+set clipboard=unnamed
 "去空行  
 nnoremap <F2> :g/^\s*$/d<CR> 
 "比较文件  
@@ -213,6 +202,7 @@ imap <F3> <ESC> :NERDTreeToggle<CR>
 map <C-F3> \be  
 :autocmd BufRead,BufNewFile *.dot map <F5> :w<CR>:!dot -Tjpg -o %<.jpg % && eog %<.jpg  <CR><CR> && exec "redr!"
 "C，C++ 按F5编译运行
+map <F4> :Ack<CR>
 map <F5> :call CompileRunGcc()<CR>
 func! CompileRunGcc()
 	exec "w"
@@ -240,7 +230,7 @@ func! CompileRunGcc()
 	endif
 endfunc
 "C,C++的调试
-map <F8> :call Rungdb()<CR>
+map <F6> :call Rungdb()<CR>
 func! Rungdb()
 	exec "w"
 	exec "!g++ % -g -o %<"
@@ -250,7 +240,7 @@ endfunc
 
 "代码格式优化化
 
-map <F6> :call FormartSrc()<CR><CR>
+map <F8> :call FormartSrc()<CR><CR>
 
 "定义FormartSrc()
 func FormartSrc()
@@ -278,9 +268,6 @@ endfunc
 "结束定义FormartSrc
 
 
-
-
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""实用设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -304,7 +291,7 @@ set completeopt=preview,menu
 "允许插件  
 "filetype plugin on
 "共享剪贴板  
-"set clipboard+=unnamed 
+set clipboard+=unnamed 
 "自动保存
 set autowrite
 "set ruler                   " 打开状态栏标尺
@@ -378,28 +365,19 @@ let Tlist_Sort_Type = "name"    " 按照名称排序
 let Tlist_Use_Right_Window = 1  " 在右侧显示窗口  
 let Tlist_Compart_Format = 1    " 压缩方式  
 let Tlist_Exist_OnlyWindow = 1  " 如果只有一个buffer，kill窗口也kill掉buffer  
-""let Tlist_File_Fold_Auto_Close = 0  " 不要关闭其他文件的tags  
-""let Tlist_Enable_Fold_Column = 0    " 不要显示折叠树  
-"let Tlist_Show_One_File=1            "不同时显示多个文件的tag，只显示当前文件的
+let Tlist_File_Fold_Auto_Close = 0  " 不要关闭其他文件的tags  
+let Tlist_Enable_Fold_Column = 0    " 不要显示折叠树  
+let Tlist_Show_One_File=1            "不同时显示多个文件的tag，只显示当前文件的
 "设置tags  
-"set tags=tags  
-"set autochdir 
-
-
-
-
-
-
-
-
-
+set tags=tags;  
+set autochdir 
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "其他东东
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "默认打开Taglist 
-let Tlist_Auto_Open=0 
+let Tlist_Auto_Open=1 
 """""""""""""""""""""""""""""" 
 " Tag list (ctags) 
 """""""""""""""""""""""""""""""" 
@@ -414,16 +392,6 @@ let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 1
 let g:miniBufExplModSelTarget = 1  
 nmap tl :Tlist<cr>
-
-
-
-"输入法
-:let g:vimim_map='c-/'
-":let g:vimim_cloud='sougou' " QQ云输入
-:let g:vimim_punctuation=0	" 不用中文标点
-:set pastetoggle=<C-H>
-:let g:vimim_cloud=-1
-
 
 "python补全
 let g:pydiction_location = '~/.vim/after/complete-dict'
@@ -464,18 +432,18 @@ let g:indentLine_char = '┊'
 Bundle 'L9'
 Bundle 'FuzzyFinder'
 " non github repos
-Bundle 'git://git.wincent.com/command-t.git'
+Bundle 'https://github.com/wincent/command-t.git'
 Bundle 'Auto-Pairs'
 Bundle 'python-imports.vim'
 Bundle 'CaptureClipboard'
 Bundle 'ctrlp-modified.vim'
 Bundle 'last_edit_marker.vim'
 Bundle 'synmark.vim'
-"Bundle 'Python-mode-klen'
+Bundle 'Python-mode-klen'
 Bundle 'SQLComplete.vim'
 Bundle 'Javascript-OmniCompletion-with-YUI-and-j'
-"Bundle 'JavaScript-Indent'
-"Bundle 'Better-Javascript-Indentation'
+Bundle 'JavaScript-Indent'
+Bundle 'Better-Javascript-Indentation'
 Bundle 'jslint.vim'
 Bundle "pangloss/vim-javascript"
 Bundle 'Vim-Script-Updater'
@@ -483,9 +451,12 @@ Bundle 'ctrlp.vim'
 Bundle 'tacahiroy/ctrlp-funky'
 Bundle 'jsbeautify'
 Bundle 'The-NERD-Commenter'
+
+Bundle 'Valloric/YouCompleteMe'
+"golang
 "django
-Bundle 'django_templates.vim'
-Bundle 'Django-Projects'
+"Bundle 'django_templates.vim'
+"Bundle 'Django-Projects'
 
 "Bundle 'FredKSchott/CoVim'
 "Bundle 'djangojump'
@@ -495,16 +466,6 @@ let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 
 filetype plugin indent on     " required!
-"
-" Brief help
-" :BundleList          - list configured bundles
-" :BundleInstall(!)    - install(update) bundles
-" :BundleSearch(!) foo - search(or refresh cache first) for foo
-" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
-"
-" see :h vundle for more details or wiki for FAQ
-" NOTE: comments after Bundle command are not allowed..
-"
 "
 "ctrlp设置
 "
