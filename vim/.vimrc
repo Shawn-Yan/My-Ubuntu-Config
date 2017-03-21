@@ -377,11 +377,11 @@ set autochdir
 "其他东东
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "默认打开Taglist 
-let Tlist_Auto_Open=1 
+let Tlist_Auto_Open=0 
 """""""""""""""""""""""""""""" 
 " Tag list (ctags) 
 """""""""""""""""""""""""""""""" 
-let Tlist_Ctags_Cmd = '/usr/local/bin/ctags' 
+let Tlist_Ctags_Cmd = '~/.jumbo/bin/ctags' 
 let Tlist_Show_One_File = 1 "不同时显示多个文件的tag，只显示当前文件的 
 let Tlist_File_Fold_Auto_Close = 1
 let Tlist_Exit_OnlyWindow = 1 "如果taglist窗口是最后一个窗口，则退出vim 
@@ -396,7 +396,7 @@ nmap tl :Tlist<cr>
 "python补全
 let g:pydiction_location = '~/.vim/after/complete-dict'
 let g:pydiction_menu_height = 20
-let Tlist_Ctags_Cmd='/usr/local/bin/ctags'
+let Tlist_Ctags_Cmd='~/.jumbo/bin/ctags'
 let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 1
@@ -410,8 +410,8 @@ set fileencodings=utf8,ucs-bom,gbk,cp936,gb2312,gb18030
 
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 
-"set nocompatible               " be iMproved
-"filetype off                   " required!
+set nocompatible               " be iMproved
+filetype off                   " required!
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
@@ -427,7 +427,7 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 Bundle 'Yggdroot/indentLine'
 let g:indentLine_char = '┊'
-"ndle 'tpope/vim-rails.git'
+Bundle 'tpope/vim-rails.git'
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'FuzzyFinder'
@@ -445,16 +445,19 @@ Bundle 'Javascript-OmniCompletion-with-YUI-and-j'
 Bundle 'JavaScript-Indent'
 Bundle 'Better-Javascript-Indentation'
 Bundle 'jslint.vim'
-Bundle "pangloss/vim-javascript"
+Bundle 'pangloss/vim-javascript'
 Bundle 'Vim-Script-Updater'
 Bundle 'ctrlp.vim'
 Bundle 'tacahiroy/ctrlp-funky'
 Bundle 'jsbeautify'
 Bundle 'The-NERD-Commenter'
 
-Bundle 'Valloric/YouCompleteMe'
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-"golang
+Bundle 'vim-airline/vim-airline'
+Bundle 'vim-airline/vim-airline-themes'
+let g:airline_theme= 'base16_solarized'
+
+"Bundle 'Valloric/YouCompleteMe'
+"let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 "django
 "Bundle 'django_templates.vim'
 "Bundle 'Django-Projects'
@@ -478,3 +481,21 @@ let g:ctrlp_custom_ignore = '\v\.(exe|so|dll)$'
 let g:ctrlp_extensions = ['funky']
 
 let NERDTreeIgnore=['\.pyc']
+
+" Comment "
+map <A-/> :call CommentLine()<CR>
+function CommentLine()
+    let isCommented = 0
+    let curline = line(".")
+    let linestr = getline(curline)
+    let linelen = len(linestr)
+    let headend = 0
+
+    if linelen > 2 && linestr[0] == '/' && linestr[1] == '*'
+        exec "normal! 0xx$xx/"
+    else
+        exec "normal! 0i"
+    endif
+endfunc
+
+
